@@ -8,33 +8,33 @@ defmodule Consul.Health do
   alias Consul.Endpoint
   use Consul.Endpoint, handler: Consul.Handler.Base
 
-  @checks  "checks"
-  @health  "health"
-  @node    "node"
+  @checks "checks"
+  @health "health"
+  @node "node"
   @service "service"
-  @state   "state"
+  @state "state"
 
-  @spec checks(binary, Keyword.t) :: Endpoint.response
+  @spec checks(binary, Keyword.t()) :: Endpoint.response()
   def checks(id, opts \\ []) do
     build_url([@health, @checks, id], opts)
-      |> req_get()
+    |> req_get()
   end
 
-  @spec node(binary, Keyword.t) :: Endpoint.response
+  @spec node(binary, Keyword.t()) :: Endpoint.response()
   def node(id, opts \\ []) do
     build_url([@health, @node, id], opts)
-      |> req_get()
+    |> req_get()
   end
 
-  @spec service(binary, Keyword.t) :: Endpoint.response
+  @spec service(binary, Keyword.t()) :: Endpoint.response()
   def service(id, opts \\ []) do
     build_url([@health, @service, id], opts)
-      |> req_get()
+    |> req_get()
   end
 
-  @spec state(binary, Keyword.t) :: Endpoint.response
+  @spec state(binary, Keyword.t()) :: Endpoint.response()
   def state(id, opts \\ []) do
     build_url([@health, @state, id], opts)
-      |> req_get()
+    |> req_get()
   end
 end

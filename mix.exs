@@ -1,11 +1,15 @@
 defmodule Consul.Mixfile do
   use Mix.Project
 
+  @app :kantox_consul
+  @version "1.2.0"
+
   def project do
     [
-      app: :consul,
-      version: "1.1.0",
+      app: @app,
+      version: @version,
       elixir: "~> 1.0",
+      name: "Consul API",
       deps: deps(),
       package: package(),
       description: description()
@@ -14,22 +18,18 @@ defmodule Consul.Mixfile do
 
   def application do
     [
-      applications: [
-        :httpoison,
-        :exjsx
-      ],
       mod: {Consul, []},
       env: [
         host: "localhost",
-        port: 8500,
+        port: 8500
       ]
     ]
   end
 
   defp deps do
     [
-      {:exjsx, "~> 3.0"},
-      {:httpoison, "~> 0.11.0"},
+      {:jason, "~> 1.0"},
+      {:httpoison, "~> 1.0"},
       {:ex_doc, "~> 0.14", only: :dev}
     ]
   end
@@ -41,8 +41,10 @@ defmodule Consul.Mixfile do
   end
 
   defp package do
-    %{licenses: ["MIT"],
-      maintainers: ["Jamie Winsor"],
-      links: %{"Github" => "https://github.com/undeadlabs/consul-ex"}}
+    %{
+      licenses: ["MIT"],
+      maintainers: ["Jamie Winsor", "Aleksei Matiushkin"],
+      links: %{"Github" => "https://github.com/am-kantox/consul-ex"}
+    }
   end
 end

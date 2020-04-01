@@ -11,75 +11,81 @@ defmodule Consul.Kv do
 
   @kv "kv"
 
-  @spec fetch(binary | [binary], Keyword.t) :: Endpoint.response
+  @spec fetch(binary | [binary], Keyword.t()) :: Endpoint.response()
   def fetch(key, opts \\ [], http_opts \\ []) do
     List.flatten([@kv, key])
-      |> build_url(opts)
-      |> req_get([], http_opts)
+    |> build_url(opts)
+    |> req_get([], http_opts)
   end
 
-  @spec fetch!(binary | [binary], Keyword.t) :: Response.t | no_return
+  @spec fetch!(binary | [binary], Keyword.t()) :: Response.t() | no_return
   def fetch!(key, opts \\ []) do
     case fetch(key, opts) do
       {:ok, value} ->
         value
+
       {:error, response} ->
         raise(Consul.ResponseError, response)
     end
   end
 
-  @spec keys(binary | [binary]) :: Endpoint.response
+  @spec keys(binary | [binary]) :: Endpoint.response()
   def keys(prefix) do
     List.flatten([@kv, prefix])
-      |> build_url(keys: true)
-      |> req_get()
+    |> build_url(keys: true)
+    |> req_get()
   end
 
-  @spec keys!(binary | [binary]) :: Response.t | no_return
+  @spec keys!(binary | [binary]) :: Response.t() | no_return
   def keys!(prefix) do
     case keys(prefix) do
       {:ok, value} ->
         value
+
       {:error, response} ->
         raise(Consul.ResponseError, response)
     end
   end
 
-  @spec put(binary | [binary], term, Keyword.t) :: boolean
+  @spec put(binary | [binary], term, Keyword.t()) :: boolean
   def put(key, value, opts \\ []) do
     case List.flatten([@kv, key]) |> build_url(opts) |> req_put(to_string(value)) do
       {:ok, %{body: body}} ->
         body
+
       error ->
         error
     end
   end
 
-  @spec put!(binary | [binary], term, Keyword.t) :: Response.t | no_return
+  @spec put!(binary | [binary], term, Keyword.t()) :: Response.t() | no_return
   def put!(key, value, opts \\ []) do
     case put(key, value, opts) do
       {:error, response} ->
         raise(Consul.ResponseError, response)
+
       result ->
         result
     end
   end
 
-  @spec delete(binary | [binary], Keyword.t) :: Endpoint.response
+  @spec delete(binary | [binary], Keyword.t()) :: Endpoint.response()
   def delete(key, opts \\ []) do
     case List.flatten([@kv, key]) |> build_url(opts) |> req_delete() do
       {:ok, %{body: body}} ->
         body
+
       error ->
         error
     end
   end
 
-  @spec delete!(binary | [binary], Keyword.t) :: Response.t | no_return
+  @spec delete!(binary | [binary], Keyword.t()) :: Response.t() | no_return
   def delete!(key, opts \\ []) do
     case delete(key, opts) do
       {:ok, value} ->
         value
+
       {:error, response} ->
         raise(Consul.ResponseError, response)
     end

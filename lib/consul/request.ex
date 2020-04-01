@@ -11,17 +11,20 @@ defmodule Consul.Request do
     case String.downcase(url) do
       <<"http://"::utf8, _::binary>> ->
         url
+
       <<"https://"::utf8, _::binary>> ->
         url
+
       _ ->
-        Path.join("http://#{host}:#{port}/v1", url)
+        Path.join("http://#{host()}:#{port()}/v1", url)
     end
   end
 
   def process_response_body(body) do
-    case JSX.decode(body) do
+    case Jason.decode(body) do
       {:ok, decoded} ->
         decoded
+
       _ ->
         body
     end

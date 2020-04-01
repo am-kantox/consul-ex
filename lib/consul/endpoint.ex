@@ -7,16 +7,19 @@
 defmodule Consul.Endpoint do
   @path_separator "/"
 
-  @type response :: {:ok, Consul.Response.t} | {:error, Consul.Response.t}
+  @type response :: {:ok, Consul.Response.t()} | {:error, Consul.Response.t()}
 
-  @spec build_url(binary | [binary], Keyword.t) :: binary
+  @spec build_url(binary | [binary], Keyword.t()) :: binary
   def build_url(path, opts \\ [])
+
   def build_url(path, opts) when is_list(path) do
     List.flatten(path)
-      |> Enum.join(@path_separator)
-      |> build_url(opts)
+    |> Enum.join(@path_separator)
+    |> build_url(opts)
   end
+
   def build_url(path, []), do: path
+
   def build_url(path, opts) when is_binary(path) do
     path <> "?" <> URI.encode_query(opts)
   end

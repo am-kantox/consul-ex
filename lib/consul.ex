@@ -26,4 +26,3 @@ defmodule Consul do
     Supervisor.start_link([], opts)
   end
 end
-
